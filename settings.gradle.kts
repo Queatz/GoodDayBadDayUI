@@ -6,9 +6,15 @@ pluginManagement {
         maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
     }
 
-    plugins {
-        kotlin("multiplatform").version(extra["kotlin.version"] as String)
-        id("org.jetbrains.compose").version(extra["compose.version"] as String)
+    pluginManagement {
+        val kotlinVersion: String = extra["kotlin.version"] as String
+        val composeVersion: String = extra["compose.version"] as String
+
+        plugins {
+            kotlin("multiplatform") version kotlinVersion
+            kotlin("plugin.serialization") version kotlinVersion
+            id("org.jetbrains.compose") version composeVersion
+        }
     }
 }
 
