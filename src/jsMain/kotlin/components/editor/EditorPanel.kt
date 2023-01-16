@@ -42,7 +42,7 @@ fun EditorPanel(me: Person, myPromptPacks: List<PromptPack>, selectedPromptPack:
                 }
             }
         }) {
-            Text("🖉")
+            Text("\uD83D\uDD89")
         }
         Button({
             style {
@@ -54,7 +54,7 @@ fun EditorPanel(me: Person, myPromptPacks: List<PromptPack>, selectedPromptPack:
                 onDisconnect()
             }
         }) {
-            Text("🗙")
+            Text("\uD83D\uDDD9")
         }
     }
     if (me.active != true) {

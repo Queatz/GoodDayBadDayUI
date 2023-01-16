@@ -63,7 +63,7 @@ fun main() {
                                 router.navigate("/editor")
                             }
                         }) {
-                            Text("🖊")
+                            Text("\uD83D\uDD8A")
                         }
                     }
                     PromptPacks {

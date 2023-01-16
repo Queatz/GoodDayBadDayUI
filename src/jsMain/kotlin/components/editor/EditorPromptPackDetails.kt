@@ -10,7 +10,9 @@ import kotlinx.browser.window
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.web.attributes.ATarget
 import org.jetbrains.compose.web.attributes.placeholder
+import org.jetbrains.compose.web.attributes.target
 import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.dom.*
 import kotlin.time.Duration
@@ -107,7 +109,18 @@ fun EditorPromptPackDetails(promptPack: PromptPack, onSave: () -> Unit, onDelete
                     }
                 }
             }) {
-                Text("🗑")
+                Text("\uD83D\uDDD1")
+            }
+            A(href = "/pack/${promptPack.id}", {
+                target(ATarget.Blank)
+                style {
+                    marginLeft(1.cssRem)
+                    fontSize(80.percent)
+                    textDecoration("none")
+                    property("vertical-align", "middle")
+                }
+            }) {
+                Text("Preview")
             }
         }
         Div {

@@ -11,8 +11,8 @@ import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 
-private const val baseUrl = "http://0.0.0.0:9090"
-//private const val baseUrl = "https://api.gooddaybad.day"
+//private const val baseUrl = "http://0.0.0.0:9090"
+private const val baseUrl = "https://api.gooddaybad.day"
 
 private val applicationJson = ContentType.Application.Json
 private val http = HttpClient(Js) {

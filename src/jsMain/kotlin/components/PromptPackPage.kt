@@ -17,6 +17,7 @@ import splitAll
 fun PromptPackPage(id: String, goBack: () -> Unit, onLoad: (PromptPack) -> Unit) {
     var promptPack by remember { mutableStateOf<PromptPack?>(null) }
     var prompt by remember { mutableStateOf<String?>(null) }
+    var prompts by remember { mutableStateOf<MutableList<String>>(mutableListOf()) }
     val scope = rememberCoroutineScope()
 
     LaunchedEffect(id) {
@@ -30,8 +31,25 @@ fun PromptPackPage(id: String, goBack: () -> Unit, onLoad: (PromptPack) -> Unit)
         }
     }
 
+    fun randomizePrompts() {
+        prompts.clear()
+        prompts.addAll(promptPack?.prompts?.shuffled() ?: return)
+        if (prompts[0] == prompt) {
+            prompts.reverse()
+        }
+        prompt = prompts.removeAt(0)
+    }
+
+    fun nextRandomPrompt() {
+        if (prompts.isEmpty()) {
+            randomizePrompts()
+        } else {
+            prompt = prompts.removeAt(0)
+        }
+    }
+
     LaunchedEffect(promptPack) {
-        prompt = promptPack?.prompts?.first()
+        randomizePrompts()
     }
 
     if (promptPack == null) {
@@ -74,10 +92,10 @@ fun PromptPackPage(id: String, goBack: () -> Unit, onLoad: (PromptPack) -> Unit)
             border(1.px, LineStyle.Solid, Color("rgba(0 0 0 / 50%)"))
         }
         onClick {
-            prompt = promptPack?.prompts?.filter { it != prompt }?.randomOrNull()
+            nextRandomPrompt()
         }
     }) {
-        Text("🗘 Shuffle")
+        Text("\uD83D\uDDD8 Shuffle")
     }
 }
 

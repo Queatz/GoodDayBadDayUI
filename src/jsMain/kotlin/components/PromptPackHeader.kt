@@ -17,7 +17,7 @@ fun PromptPackHeader(promptPack: PromptPack, goBack: () -> Unit) {
             backgroundColor(Color(promptPack.color ?: "#fff"))
         }
     }) {
-        IconButton("🡨") {
+        IconButton("\uD83E\uDC68") {
             goBack()
         }
         Div({

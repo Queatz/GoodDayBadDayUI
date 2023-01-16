@@ -21,7 +21,7 @@ fun HowToPlay(showHowToPlay: Boolean, toggle: () -> Unit) {
                     cursor("pointer")
                     display(DisplayStyle.Flex)
                     justifyContent(JustifyContent.SpaceBetween)
-                    marginBottom(.5.cssRem)
+                    marginBottom(1.cssRem)
                     marginRight(1.cssRem)
                 }
                 onClick {
@@ -30,7 +30,7 @@ fun HowToPlay(showHowToPlay: Boolean, toggle: () -> Unit) {
             }
         ) {
             Div { Text("How to play") }
-            Div { Text(if (showHowToPlay) "⏷" else "⏶") }
+            Div { Text(if (showHowToPlay) "\uD83D\uDCD6" else "\uD83D\uDCD8") }
         }
 
         if (showHowToPlay) Div({
