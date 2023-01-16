@@ -8,8 +8,8 @@ import io.ktor.client.plugins.*
 import kotlinx.browser.window
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.web.css.*
+import org.jetbrains.compose.web.dom.B
 import org.jetbrains.compose.web.dom.Div
-import org.jetbrains.compose.web.dom.Span
 import org.jetbrains.compose.web.dom.Text
 import splitAll
 
@@ -83,7 +83,7 @@ fun PromptPackPage(id: String, goBack: () -> Unit, onLoad: (PromptPack) -> Unit)
 
 @Composable
 private fun String.parse(color: String) {
-    splitAll("@\\w+".toRegex()).map {
+    splitAll("@\\w+".toRegex()).forEach {
         if (it.startsWith("@")) {
             PersonName(it.drop(1), color)
         } else {
@@ -94,10 +94,9 @@ private fun String.parse(color: String) {
 
 @Composable
 fun PersonName(name: String, color: String) {
-    Span({
+    B({
         style {
-            fontWeight("bold")
-            color(Color(color))
+            property("color", color)
             property("border-bottom", "2px solid $color")
         }
     }) {

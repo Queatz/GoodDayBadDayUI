@@ -1,11 +1,16 @@
-Setup
+Build
+=====
+
+`./gradlew jsBrowserDistribution`
+
+Files are in `build/distributions`
+
+Deploy
 =====
 
 ```shell
 apt update
-apt install certbot nodejs npm nginx
-npm install -g angular-http-server
-certbot
+apt install certbot nodejs npm nginx python3-certbot-nginx
 ```
 
 ## HTTP -> HTTPS
@@ -17,18 +22,23 @@ certbot
 ```
 server {
     server_name _;
+    root /root/ui;
+    listen 80;
 
     location / {
-        alias /root;
         index index.html;
-        try_files $uri $uri/ index.html =404;
+        try_files $uri $uri/ /index.html;
     }
 }
 ```
 
-3. Finally, restart Nginx
+chmod `/root/ui` with `755`
+
+3. Finally
 
 ```shell
+certbot --nginx
+nginx -t
 service nginx restart
 ```
 
