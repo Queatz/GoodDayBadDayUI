@@ -1,13 +1,13 @@
+/**
+ * Splits a string on and includes delimiters in the result.
+ */
 fun String.splitAll(regex: Regex): List<String> {
-    val ranges = regex.findAll(this).map {
-        it.range
-    }.sortedBy { it.first }.toList()
+    val ranges = regex.findAll(this)
+        .map { it.range }
+        .sortedBy { it.first }
+        .toList()
 
-    if (ranges.isEmpty()) {
-        return listOf(this)
-    }
-
-    return buildList {
+    return if (ranges.isEmpty()) listOf(this) else buildList {
         add(0 until ranges.first().first)
         addAll(
             ranges.fold(listOf<IntRange>()) { acc, range ->

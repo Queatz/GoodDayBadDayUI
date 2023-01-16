@@ -6,6 +6,7 @@ import kotlinx.serialization.Serializable
 class Person(
     var id: String? = null,
     var name: String? = null,
+    var active: Boolean? = null,
 )
 
 @Serializable
@@ -17,5 +18,5 @@ class PromptPack(
     var level: String? = null,
     var active: Boolean? = null,
     var description: String? = null,
-    var prompts: List<String> = emptyList()
+    var prompts: List<String>? = null
 )

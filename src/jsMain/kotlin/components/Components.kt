@@ -50,14 +50,14 @@ object ComponentStyles : StyleSheet() {
 }
 
 @Composable
-fun Loading() {
+fun Loading(onBackground: Boolean) {
     Div({
         style {
             display(DisplayStyle.Flex)
             flexDirection(FlexDirection.Column)
             alignItems(AlignItems.Center)
             fontSize(24.px)
-            color(Color.slategray)
+            color(if (onBackground) Color.white else Color.slategray)
         }
     }) {
         Span({

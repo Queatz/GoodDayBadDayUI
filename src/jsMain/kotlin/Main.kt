@@ -1,34 +1,28 @@
 import Styles.mainContent
 import androidx.compose.runtime.*
 import api.PromptPack
+import api.api
 import app.softwork.routingcompose.BrowserRouter
 import app.softwork.routingcompose.Router
 import components.*
-import io.ktor.client.*
-import io.ktor.client.engine.js.*
-import io.ktor.client.plugins.contentnegotiation.*
-import io.ktor.serialization.kotlinx.json.*
+import io.ktor.client.plugins.*
 import kotlinx.browser.document
 import kotlinx.browser.window
 import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.dom.*
 import org.jetbrains.compose.web.renderComposableInBody
 
-val http = HttpClient(Js) {
-    install(ContentNegotiation) { json(DefaultJson) }
-}
-
 const val appName = "Good Day Bad Day"
 
 fun main() {
     renderComposableInBody {
-        var promptPack by remember { mutableStateOf<PromptPack?>(null) }
-
         Style(Styles)
         Style(ComponentStyles)
 
+        var promptPack by remember { mutableStateOf<PromptPack?>(null) }
+
         LaunchedEffect(promptPack) {
-            document.title = promptPack?.name ?: appName
+            document.title = promptPack?.name?.let { "$it • $appName" } ?: appName
         }
 
         BrowserRouter("") {
@@ -66,15 +60,15 @@ fun main() {
                                 cursor("pointer")
                             }
                             onClick {
-                                // todo app.openEditor()
-                                //      checks if connected yet, if not, show modal
                                 router.navigate("/editor")
                             }
                         }) {
                             Text("🖊")
                         }
                     }
-                    PromptPacks(router)
+                    PromptPacks {
+                        router.navigate("/pack/${it.id}")
+                    }
                 }
             }
 
@@ -85,10 +79,9 @@ fun main() {
             route("pack") {
                 string { promptPackId ->
                     content {
-                        PromptPackHeader {
+                        PromptPackPage(promptPackId, {
                             router.navigate("/")
-                        }
-                        PromptPackPage(promptPackId) {
+                        }) {
                             promptPack = it
                         }
                     }
@@ -115,9 +108,29 @@ fun content(content: @Composable () -> Unit) {
 }
 
 @Composable
-fun PromptPacks(router: Router) {
-    PromptPackCard(PromptPack()) {
-        router.navigate("/pack/${1}")
+fun PromptPacks(onClick: (PromptPack) -> Unit) {
+    var promptPacks by remember { mutableStateOf(listOf<PromptPack>()) }
+    var loading by remember { mutableStateOf(true) }
+
+    LaunchedEffect(Unit) {
+        loading = true
+        try {
+            promptPacks = api.packs()
+        } catch (e: ResponseException) {
+            window.alert("Error loading Prompt Packs")
+        } finally {
+            loading = false
+        }
+    }
+
+    if (loading) {
+        Loading(onBackground = true)
+    } else {
+        promptPacks.forEach { promptPack ->
+            PromptPackCard(promptPack, false) {
+                onClick(promptPack)
+            }
+        }
     }
 }
 
